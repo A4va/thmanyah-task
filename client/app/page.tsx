@@ -1,8 +1,16 @@
 import { fetcher } from "@/lib/fetcher";
+import type { ITunesSearchResponse } from '@shared/types';
 import Image from "next/image";
 
-export default async function Home() {
+interface PageProps {
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
+export default async function Home({ searchParams }: PageProps) {
+  // const { term } = searchParams;
   const { message } = await fetcher<{ message: string }>('/');
+  const data = await fetcher<ITunesSearchResponse>(`/media?term={term}`);
+  console.log(data);
 
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
